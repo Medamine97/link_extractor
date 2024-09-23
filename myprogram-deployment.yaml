@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mycontainer
-        image: localhost/myprogram:latest
+        image: docker.io/library/myprogram:latest
         ports:
         - containerPort: 80
         resources:
