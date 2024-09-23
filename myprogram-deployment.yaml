@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myprogram-deployment
+  labels:
+    app: myprogram
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myprogram
+  template:
+    metadata:
+      labels:
+        app: myprogram
+    spec:
+      containers:
+      - name: mycontainer
+        image: localhost/myprogram:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
