@@ -17,6 +17,7 @@ spec:
       containers:
       - name: mycontainer
         image: docker.io/medamine97/myprogram:latest
+        args: ["-u", "https://news.ycombinator.com", "-o","stdout"]
         ports:
         - containerPort: 80
         resources:
