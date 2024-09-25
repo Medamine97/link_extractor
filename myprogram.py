@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 def get_links_from_url(url):
     # Send a GET request to the URL
-    response = requests.get(url, verify=False)
+    response = requests.get(url)
     html_content = response.content 
     
     soup = BeautifulSoup(html_content, "html.parser") 
