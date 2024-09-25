@@ -30,6 +30,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y kubectl
 
+    - name: Install OCI CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install oci-cli
+
     - name: Set up kubeconfig
       run: |
         mkdir -p ~/.kube
@@ -41,7 +47,6 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl get cluster-info
         kubectl apply -f myprogram-deployment.yaml --validate=false
     
     - name: Get deployment & pod status
