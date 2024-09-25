@@ -17,6 +17,7 @@ spec:
       containers:
       - name: mycontainer
         image: docker.io/medamine97/myprogram:latest
+        command: ["python3", "myprogram.py"]
         args: ["-u", "https://news.ycombinator.com", "-o","json"]
         ports:
         - containerPort: 80
