@@ -35,9 +35,9 @@ jobs:
         mkdir -p ~/.kube
         echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config 
       
-    - name: Get cluster-info
+    - name: Get nodes
       run: |
-        kubectl get cluster-info
+        kubectl get nodes
 
     - name: Deploy to Kubernetes
       run: |
