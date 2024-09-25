@@ -16,6 +16,10 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag myprogram:latest
+    - name: Log in to Docker Hub
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push the Docker image
+      run: docker tag myprogram:latest ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
 
   deploy:
     runs-on: ubuntu-latest
