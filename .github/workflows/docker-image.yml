@@ -53,6 +53,24 @@ jobs:
         kubectl get deployment myprogram-deployment
         kubectl logs -l app=myprogram
     
-    - name: Get pod status
+    - name: Get pod logs
       run: |
         kubectl logs -l app=myprogram
+
+    - name: Extract and sanitize domains using awk
+      run: |
+        awk '{gsub(/^https?:\/\//, ""); gsub(/^www\./, ""); gsub(/[[:punct:]]+$/, ""); print tolower($0)}' file.txt | sort -u > sanitized_domains_awk.txt
+
+    - name: Extract and sanitize domains using sed
+      run: |
+        sed -E 's|https?://||; s|www\.||; s|\.| |g; s|[[:punct:]]*$||' file.txt | tr '[:upper:]' '[:lower:]' | sort -u > sanitized_domains_sed.txt
+
+    - name: Display sanitized domains from awk
+      run: |
+        echo "Sanitized Domains (from awk):"
+        cat sanitized_domains_awk.txt
+
+    - name: Display sanitized domains from sed
+      run: |
+        echo "Sanitized Domains (from sed):"
+        cat sanitized_domains_sed.txt
