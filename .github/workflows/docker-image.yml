@@ -47,11 +47,7 @@ jobs:
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f myprogram-deployment.yaml --validate=false
-    
-    - name: Execute Python script
-      run: |
-          kubectl exec $(kubectl get pods -l app=myprogram -o jsonpath="{.items[0].metadata.name}") -- python myprogram.py -u "https://www.google.com" -o json
-    
+
     - name: Get pod logs
       run: |
           kubectl get deployment myprogram-deployment
