@@ -59,7 +59,7 @@ jobs:
 
     - name: Extract and sanitize domains using sed
       run: |
-        sed -E 's|https?://||; s|www\.||; s|\.| |g; s|[[:punct:]]*$||' file.txt | tr '[:upper:]' '[:lower:]' | sort -u > sanitized_domains_sed.txt
+        sed -E 's|https?://||; s|www\.||; s|\.[[:punct:]]*$||; s|\.$||' file.txt | tr '[:upper:]' '[:lower:]' | sort -u > sanitized_domains_sed.txt
 
     - name: Display sanitized domains from awk
       run: |
