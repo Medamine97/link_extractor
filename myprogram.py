@@ -32,32 +32,32 @@ def get_links_by_domain(all_links):
         domain_links[domain].append(urljoin(link, urlparse(link).path))
     return domain_links
     
+def main():
+    # Setup command-line argument parsing
+    parser = argparse.ArgumentParser(description='Extract and output URLs from webpages.')
+    parser.add_argument('-u', '--url', action='append', help='URL(s) to process', required=True)
+    parser.add_argument('-o', '--output', choices=['stdout', 'json'], help='Output format', required=True)
+    args = parser.parse_args()
+    print("Hello")
+    print("args.output : ", args.output)
+    print("args.url : ", args.url)
 
-# Setup command-line argument parsing
-parser = argparse.ArgumentParser(description='Extract and output URLs from webpages.')
-parser.add_argument('-u', '--url', action='append', help='URL(s) to process', required=True)
-parser.add_argument('-o', '--output', choices=['stdout', 'json'], help='Output format', required=True)
-args = parser.parse_args()
-print("Hello")
-print("args.output : ", args.output)
-print("args.url : ", args.url)
+    all_links = []
+    for url in args.url:
+        links = get_links_from_url(url)
+        all_links.extend(links)
 
-all_links = []
-for url in args.url:
-    links = get_links_from_url(url)
-    all_links.extend(links)
-
-if args.output == 'stdout':
-    # Output one URL per line
-    for link in all_links:
-        print(link)
+    if args.output == 'stdout':
+        # Output one URL per line
+        for link in all_links:
+            print(link)
+            
+    elif args.output == 'json':
+        # Output as JSON hash with base domain and relative paths
+        domain_links = get_links_by_domain(all_links)
+        print(json.dumps(domain_links, indent=4))
         
-elif args.output == 'json':
-    # Output as JSON hash with base domain and relative paths
-    domain_links = get_links_by_domain(all_links)
-    print(json.dumps(domain_links, indent=4))
-    
-print("Script executed, sleeping forever...")
-# Sleep forever to prevent container from exiting
-while True:
-    time.sleep(3600)
+    print("Script executed, sleeping forever...")
+    # Sleep forever to prevent container from exiting
+    while True:
+        time.sleep(3600)
