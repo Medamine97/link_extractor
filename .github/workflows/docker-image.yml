@@ -48,14 +48,14 @@ jobs:
       run: |
         kubectl apply -f myprogram-deployment.yaml --validate=false
     
-    - name: Get deployment status
+    - name: Execute Python script
       run: |
-        kubectl get deployment myprogram-deployment
-        kubectl logs -l app=myprogram
+          kubectl exec -it $(kubectl get pods -l app=myprogram -o jsonpath="{.items[0].metadata.name}") -- python myprogram.py -u "https://www.google.com" -o json
     
     - name: Get pod logs
       run: |
-        kubectl logs -l app=myprogram
+          kubectl get deployment myprogram-deployment
+          kubectl logs -l app=myprogram
 
     - name: Extract and sanitize domains using awk
       run: |
