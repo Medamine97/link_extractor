@@ -43,16 +43,16 @@ jobs:
       run: |
         mkdir -p ~/.kube
         echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config 
-      
-    - name: Get nodes
-      run: |
-        kubectl get nodes
 
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f myprogram-deployment.yaml --validate=false
     
-    - name: Get deployment & pod status
+    - name: Get deployment status
       run: |
         kubectl get deployment myprogram-deployment
-        kubectl get pods -l app=myprogram
+        kubectl logs -l app=myprogram
+    
+    - name: Get pod status
+      run: |
+        kubectl logs -l app=myprogram
