@@ -71,10 +71,23 @@ jobs:
     - name: Run Checkov on Kubernetes Manifests
       run: |
         checkov -d 
+  
+  bandit:
+    runs-on: ubuntu-latest`
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Bandit
+      run: |
+        pip install bandit
+    - name: Run Bandit Security Linter
+      run: |
+        bandit -r .
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, trivy, sonarqube]
 
     steps:
     - name: Checkout code
