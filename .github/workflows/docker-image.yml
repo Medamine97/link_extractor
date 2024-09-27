@@ -26,17 +26,15 @@ jobs:
     - name: Push the Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
 
-  trivy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Install Trivy
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y trivy
-    - name: Scan Docker image for vulnerabilities
-      run: |
-        trivy image ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKER_USERNAME }}/myprogram:latest'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
 
   deploy:
     runs-on: ubuntu-latest
