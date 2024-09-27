@@ -26,6 +26,9 @@ jobs:
     - name: Push the Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
 
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.20.0
       with:
@@ -38,7 +41,7 @@ jobs:
       with:
         sarif_file: 'trivy-results.sarif'
   
-  sonarcloud:
+  sonarqube:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
