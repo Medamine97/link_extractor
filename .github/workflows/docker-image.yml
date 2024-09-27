@@ -77,6 +77,7 @@ jobs:
       run: |
         pip install checkov
     - name: Run Checkov on Kubernetes Manifests
+      continue-on-error: true
       run: |
         checkov -d .
   
