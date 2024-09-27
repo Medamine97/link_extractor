@@ -26,9 +26,94 @@ jobs:
     - name: Push the Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
 
-  deploy:
+  trivy:
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKER_USERNAME }}/myprogram:latest'
+        format: 'sarif'
+        template: '@/contrib/sarif.tpl'
+        output: 'security-results/trivy-results.sarif'
+        severity: 'CRITICAL,HIGH'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'security-results/trivy-results.sarif'
+  
+  checkov:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Checkov
+      run: |
+        pip install checkov
+    - name: Run Checkov on Kubernetes Manifests
+      continue-on-error: true
+      run: |
+        checkov -d . --output-file-path security-results/checkov-report.sarif --output sarif
+  
+  bandit:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Bandit and SARIF Converter
+      run: |
+        pip install bandit bandit-sarif
+    - name: Create Output Directory
+      run: |
+        mkdir -p security-results
+    - name: Run Bandit Security Linter & Save Results
+      continue-on-error: true  # Continue even if Bandit finds issues
+      run: |
+        bandit -r . -f json -o security-results/bandit-results.json
+        bandit-sarif -i security-results/bandit-results.json -o security-results/bandit-report.sarif
+
+  sonarqube:
+      runs-on: ubuntu-latest
+      needs: [build, trivy, checkov, bandit]
+
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+        - name: Setup Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: "3.14.0-alpha.0"
+        - name: Install tox and any other packages
+          run: |
+                pip install tox
+                pip install pytest-cov
+        - name: Run tox
+          run: tox -e py
+        - name: SonarCloud Scan
+          uses: SonarSource/sonarcloud-github-action@master
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Needed to get PR information, if any
+          with:
+            args: >
+              -Dsonar.sources=.
+              -Dsonar.externalIssuesReportPaths=security-results/bandit-report.sarif,security-results/checkov-report.sarif,security-results/trivy-results.sarif
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, trivy, sonarqube]
 
     steps:
     - name: Checkout code
