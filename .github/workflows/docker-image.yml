@@ -78,7 +78,7 @@ jobs:
         pip install checkov
     - name: Run Checkov on Kubernetes Manifests
       run: |
-        checkov -d 
+        checkov -d .
   
   bandit:
     runs-on: ubuntu-latest
