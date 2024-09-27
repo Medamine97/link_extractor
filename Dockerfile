@@ -23,4 +23,4 @@ USER appuser
 RUN chmod +x myprogram.py
 
 # STEP 9 Run the Python script by default when the container starts
-ENTRYPOINT ["python", "./myprogram.py", "-u", "https://www.google.com", "-o", "json"]
+CMD ["python", "./myprogram.py", "-u", "https://www.google.com", "-o", "json"]
