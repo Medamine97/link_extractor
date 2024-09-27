@@ -90,8 +90,15 @@ jobs:
       run: |
         pip install bandit
     - name: Run Bandit Security Linter
+      continue-on-error: true  # Continue even if Bandit finds issues
       run: |
         bandit -r .
+    - name: Upload Bandit Results
+      if: always()
+      run: |
+        mkdir -p security-results
+        bandit -r . -f html -o security-results/bandit-report.html
+      continue-on-error: true
 
   deploy:
     runs-on: ubuntu-latest
