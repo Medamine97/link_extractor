@@ -1,0 +1,36 @@
+name: Deploy Monitoring Stack
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-monitoring:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up kubeconfig
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.10.2
+
+    - name: Install Prometheus and Grafana using Helm
+      run: |
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo update
+        helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+
+    - name: Check Deployment Status
+      run: kubectl get pods -n monitoring
+
+    - name: Expose Grafana (Optional Ingress Setup)
+      run: |
+        kubectl apply -f ingress.yaml
