@@ -27,8 +27,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -38,18 +36,13 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y kubectl
 
-    - name: Set up kubeconfig from secrets
+    - name: Set up Kubeconfig
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: |
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-        chmod 600 ~/.kube/config
+        echo "$KUBECONFIG" > ~/.kube/config
 
-    - name: Deploy to Kubernetes
+    - name: Apply Kubernetes manifests
       run: |
-        kubectl apply -f myprogram-deployment.yaml --validate=false
-        kubectl rollout status deployment myprogram-deployment
-
-    - name: Get pod logs
-      run: |
-        kubectl get pods --selector=app=myprogram
-        kubectl logs -l app=myprogram
+        kubectl apply -f myprogram-deployment.yaml
