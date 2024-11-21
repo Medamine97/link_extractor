@@ -46,6 +46,9 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
+        ls 
+        git clone https://github.com/Medamine97/link_extractor.git
+        cd link_extractor
         kubectl apply -f myprogram-deployment.yaml --validate=false
 
     - name: Get pod logs
