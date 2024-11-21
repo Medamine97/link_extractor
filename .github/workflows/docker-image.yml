@@ -9,7 +9,6 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +31,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install kubectl
       run: |
@@ -42,17 +41,15 @@ jobs:
     - name: Set up kubeconfig
       run: |
         mkdir -p ~/.kube
-        echo /etc/rancher/k3s/k3s.yaml > ~/.kube/config 
+        cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+        chmod 600 ~/.kube/config
 
     - name: Deploy to Kubernetes
       run: |
-        ls 
-        git clone https://github.com/Medamine97/link_extractor.git
-        cd link_extractor
         kubectl apply -f myprogram-deployment.yaml --validate=false
+        kubectl rollout status deployment myprogram-deployment
 
     - name: Get pod logs
       run: |
-          kubectl get deployment myprogram-deployment
-          kubectl logs -l app=myprogram
-
+        kubectl get pods --selector=app=myprogram
+        kubectl logs -l app=myprogram
