@@ -42,7 +42,7 @@ jobs:
     - name: Set up kubeconfig
       run: |
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config 
+        echo /etc/rancher/k3s/k3s.yaml > ~/.kube/config 
 
     - name: Deploy to Kubernetes
       run: |
