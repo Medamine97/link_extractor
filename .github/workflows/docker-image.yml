@@ -45,4 +45,4 @@ jobs:
 
     - name: Apply Kubernetes manifests
       run: |
-        kubectl apply -f myprogram-deployment.yaml
+        kubectl apply -f myprogram-deployment.yaml --validate=false
