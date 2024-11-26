@@ -39,15 +39,16 @@ jobs:
         sudo apt-get install -y kubectl
 
     - name: Set up Kubeconfig
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: |
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
 
     - name: Verify Kubernetes connection
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: kubectl cluster-info
 
     - name: Apply Kubernetes manifests
-      run: |
-        kubectl apply -f myprogram-deployment.yaml --validate=false
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: kubectl apply -f myprogram-deployment.yaml
