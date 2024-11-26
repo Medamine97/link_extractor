@@ -1,5 +1,5 @@
 # STEP 1: Use a base image suitable for the target architecture
-FROM arm64v8/python:3.9-slim
+FROM python:3.9-slim
 
 # STEP 2: Add a non-root user for better security
 RUN apt-get update && apt-get install -y passwd \
