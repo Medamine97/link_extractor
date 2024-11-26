@@ -44,11 +44,7 @@ jobs:
         echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
 
     - name: Verify Kubernetes connection
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: kubectl cluster-info
 
     - name: Apply Kubernetes manifests
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: kubectl apply -f myprogram-deployment.yaml
