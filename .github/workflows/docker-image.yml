@@ -43,3 +43,8 @@ jobs:
         KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: |
         mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
+
+    - name: Apply Kubernetes manifests
+      run: |
+        kubectl apply -f myprogram-deployment.yaml
