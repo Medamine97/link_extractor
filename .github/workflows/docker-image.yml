@@ -23,11 +23,7 @@ jobs:
     - name: Build and Push Docker image
       run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/myprogram:latest --push .
     - name: Show Docker image
-      run: docker images 
-    - name: Tag the Docker image
-      run: docker tag ${{ secrets.DOCKER_USERNAME }}/myprogram:latest ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
-    - name: Push the Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
+      run: docker images ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
 
   deploy:
     runs-on: ubuntu-latest
