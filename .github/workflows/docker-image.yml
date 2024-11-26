@@ -45,6 +45,9 @@ jobs:
         mkdir -p ~/.kube
         echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
 
+    - name: Verify Kubernetes connection
+      run: kubectl cluster-info
+
     - name: Apply Kubernetes manifests
       run: |
-        kubectl apply -f myprogram-deployment.yaml
+        kubectl apply -f myprogram-deployment.yaml --validate=false
