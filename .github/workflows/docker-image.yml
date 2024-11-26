@@ -22,6 +22,8 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and Push Docker image
       run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/myprogram:latest --push .
+    - name: Verify Docker image
+      run: docker images ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
     - name: Tag the Docker image
       run: docker tag ${{ secrets.DOCKER_USERNAME }}/myprogram:latest ${{ secrets.DOCKER_USERNAME }}/myprogram:latest
     - name: Push the Docker image
