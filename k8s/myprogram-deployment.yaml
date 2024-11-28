@@ -18,7 +18,7 @@ spec:
       - name: mycontainer
         image: docker.io/medamine97/myprogram:latest
         command: ["python3", "myprogram.py"]
-        args: ["-u", "https://www.google.com", "-o","csv", "-f", "data/output.csv"]
+        args: ["-u", "https://www.google.com", "-o","csv", "-f", "/data/output.csv"]
         ports:
         - containerPort: 80
         resources:
