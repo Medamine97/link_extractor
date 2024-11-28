@@ -47,4 +47,7 @@ jobs:
       run: kubectl cluster-info
 
     - name: Apply Kubernetes manifests
-      run: kubectl apply -f k8s/myprogram-deployment.yaml
+      run: |
+        kubectl apply -f myprogram-pv.yaml
+        kubectl apply -f myprogram-pvc.yaml
+        kubectl apply -f myprogram-deployment.yaml
