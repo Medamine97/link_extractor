@@ -7,5 +7,6 @@ data:
     {
       "url": "https://www.google.com",
       "output_format": "csv",
-      "output_file": "/data/output.csv"
+      "output_file": "/data/output.csv",
+      "secret_path": "/secrets/api_key"
     }

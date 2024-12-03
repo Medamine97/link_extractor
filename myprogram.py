@@ -32,6 +32,10 @@ def save_links_to_csv(all_links, filename):
         writer.writerow(['URL'])
         for link in all_links:
             writer.writerow([link])
+def get_secret(secret_path):
+    with open(secret_path, 'r') as secret_file:
+        api_key = secret_file.read().strip()
+        print(f"Secret Key: {api_key}")
 
 def main():
     print("Starting script...")
@@ -42,7 +46,8 @@ def main():
     url = config['url']
     output_format = config['output_format']
     output_file = config['output_file']
-
+    secret_path = config['secret_path']
+    
     all_links = []
     links = get_links_from_url(url)
     all_links.extend(links)
@@ -63,6 +68,7 @@ def main():
             print("Please provide a filename using the -f or --file option to save the results in a CSV file.")
 
     print("Script executed, sleeping forever...")
+    get_secret(secret_path)
     while True:
         time.sleep(3600)
 
