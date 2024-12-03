@@ -32,15 +32,14 @@ def main():
     with open('/config/config.json') as config_file:
         config = json.load(config_file)
     
-    urls = config['url']
+    url = config['url']
     output_format = config['output_format']
     output_file = config['output_file']
 
 
     all_links = []
-    for url in urls:
-        links = get_links_from_url(url)
-        all_links.extend(links)
+    links = get_links_from_url(url)
+    all_links.extend(links)
 
     if output_format == 'stdout':
         for link in all_links:
