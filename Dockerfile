@@ -24,4 +24,4 @@ USER appuser
 RUN chmod +x myprogram.py
 
 # Set the entry point to execute the script with default arguments
-ENTRYPOINT ["python3", "/myprogram_app/myprogram.py", "-u", "https://www.google.com", "-o", "csv", "-f", "/data/output.csv"]
+ENTRYPOINT ["python3", "/myprogram_app/myprogram.py"]
