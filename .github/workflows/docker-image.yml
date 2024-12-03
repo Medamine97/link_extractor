@@ -53,4 +53,3 @@ jobs:
           with:
             args: >
               -Dsonar.sources=.
-              -Dsonar.externalIssuesReportPaths=security-results/bandit-report.sarif,security-results/checkov-report.sarif,security-results/trivy-results.sarif
