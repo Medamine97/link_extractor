@@ -1,11 +1,9 @@
-import argparse
 import json
 import csv
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urljoin
 import time
-import os
 
 def get_links_from_url(url):
     response = requests.get(url, verify=False)
@@ -31,26 +29,28 @@ def save_links_to_csv(all_links, filename):
             writer.writerow([link])
 
 def main():
-    parser = argparse.ArgumentParser(description='Extract and output URLs from webpages.')
-    parser.add_argument('-u', '--url', action='append', help='URL(s) to process', required=True)
-    parser.add_argument('-o', '--output', choices=['stdout', 'json', 'csv'], help='Output format', required=True)
-    parser.add_argument('-f', '--file', help='CSV file to save the results')
-    args = parser.parse_args()
+    with open('/config/config.json') as config_file:
+        config = json.load(config_file)
+    
+    urls = config['url']
+    output_format = config['output_format']
+    output_file = config['output_file']
+
 
     all_links = []
-    for url in args.url:
+    for url in urls:
         links = get_links_from_url(url)
         all_links.extend(links)
 
-    if args.output == 'stdout':
+    if output_format == 'stdout':
         for link in all_links:
             print(link)
-    elif args.output == 'json':
+    elif output_format == 'json':
         domain_links = get_links_by_domain(all_links)
         print(json.dumps(domain_links, indent=4))
-    elif args.output == 'csv':
-        if args.file:
-            save_links_to_csv(all_links, args.file)
+    elif output_format == 'csv':
+        if output_file:
+            save_links_to_csv(all_links, output_file)
         else:
             print("Please provide a filename using the -f or --file option to save the results in a CSV file.")
 

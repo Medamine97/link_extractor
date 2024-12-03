@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myprogram-config
+data:
+  config.json: |
+    {
+      "url": "https://www.google.com",
+      "output_format": "csv",
+      "output_file": "/data/output.csv"
+    }
