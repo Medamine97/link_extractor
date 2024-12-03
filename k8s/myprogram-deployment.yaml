@@ -17,7 +17,6 @@ spec:
       containers:
       - name: mycontainer
         image: docker.io/medamine97/myprogram:latest
-        command: ["python3", "myprogram.py"]
         ports:
         - containerPort: 80
         resources:
