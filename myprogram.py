@@ -29,17 +29,20 @@ def save_links_to_csv(all_links, filename):
             writer.writerow([link])
 
 def main():
+    print("Starting script...")
     with open('/config/config.json') as config_file:
         config = json.load(config_file)
     
+    print("Config loaded:", config)
     url = config['url']
     output_format = config['output_format']
     output_file = config['output_file']
 
-
     all_links = []
     links = get_links_from_url(url)
     all_links.extend(links)
+
+    print("Links fetched:", all_links)
 
     if output_format == 'stdout':
         for link in all_links:
@@ -50,6 +53,7 @@ def main():
     elif output_format == 'csv':
         if output_file:
             save_links_to_csv(all_links, output_file)
+            print(f"Links saved to {output_file}")
         else:
             print("Please provide a filename using the -f or --file option to save the results in a CSV file.")
 
