@@ -36,7 +36,7 @@ def get_secret(secret_path):
     with open(secret_path, 'r') as secret_file:
         api_key = secret_file.read().strip()
         print(f"Secret Key: {api_key}")
-
+print("Test...")
 def main():
     print("Starting script...")
     with open('/config/config.json') as config_file:
