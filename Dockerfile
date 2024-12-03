@@ -24,4 +24,4 @@ USER appuser
 RUN chmod +x myprogram.py
 
 # Set the entry point to execute the script with default arguments
-ENTRYPOINT ["python3", "/myprogram_app/myprogram.py"]
+ENTRYPOINT ["python3" ,"-u", "/myprogram_app/myprogram.py"]
