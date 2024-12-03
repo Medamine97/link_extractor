@@ -7,8 +7,8 @@ import time
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
 
-# Suppress only the single InsecureRequestWarning from urllib3 needed
-warnings.simplefilter('ignore', InsecureRequestWarning)
+# # Suppress only the single InsecureRequestWarning from urllib3 needed
+# warnings.simplefilter('ignore', InsecureRequestWarning)
 
 def get_links_from_url(url):
     response = requests.get(url, verify=False)
