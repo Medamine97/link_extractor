@@ -1,0 +1,13 @@
+### pycache repo
+__pycache__
+
+### .dir
+.coverage
+
+### -info
+*-info
+
+### coverage
+coverage.xml
+htmlcov/*
+
