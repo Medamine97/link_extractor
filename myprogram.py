@@ -37,6 +37,7 @@ def get_secret(secret_path):
     with open(secret_path, 'r') as secret_file:
         api_key = secret_file.read().strip()
         print(f"Secret Key: {api_key}")
+    return api_key
 
 def main():
     print("Starting script...")
