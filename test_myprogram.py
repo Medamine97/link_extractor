@@ -1,7 +1,7 @@
 import pytest
 from urllib.parse import urlparse, urljoin
 import csv
-from myprogram import get_links_from_url, get_links_by_domain, save_links_to_csv
+from myprogram import get_links_from_url, get_links_by_domain, get_secret, save_links_to_csv
 
 def test_get_links_from_url(requests_mock):
     url = "https://example.com"
@@ -54,6 +54,12 @@ def test_save_links_to_csv(tmp_path):
             ["https://example.com/page1"],
             ["https://example.com/page2"]
         ]
+
+def test_get_secret(tmp_path):
+    secret_file = tmp_path / "secret.txt"
+    secret_file.write_text("my_secret_key")
+    secret = get_secret(secret_file)
+    assert secret == "my_secret_key"
 
 if __name__ == "__main__":
     pytest.main()

@@ -11,7 +11,7 @@ from urllib3.exceptions import InsecureRequestWarning
 warnings.simplefilter('ignore', InsecureRequestWarning)
 
 def get_links_from_url(url):
-    response = requests.get(url, verify=False)
+    response = requests.get(url, verify=True)
     html_content = response.content
     soup = BeautifulSoup(html_content, "html.parser")
     links = [link.get("href") for link in soup.find_all("a") if link.get("href") and link.get("href").startswith("http")]
