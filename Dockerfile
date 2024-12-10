@@ -3,7 +3,7 @@ FROM python:3.9-slim-buster
 
 # Add a non-root user for better security
 RUN apt-get update && apt-get install -y passwd \
-    && useradd -ms /bin/bash appuser && apt-get -y install procps 
+    && useradd -ms /bin/bash appuser && apt-get -y install procps && apt-get -y install curl 
 
 # Set the working directory inside the container
 WORKDIR /myprogram_app
